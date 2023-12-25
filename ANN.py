@@ -36,29 +36,10 @@ X = df.iloc[:, 0]
 y = df.iloc[:, -1]
 
 vectorizer = TfidfVectorizer()
-tfidf_matrix = vectorizer.fit_transform(df['Message'])
-count_vectorizer = CountVectorizer()
-count_matrix = count_vectorizer.fit_transform(df['Message'])
-
+sentence_embeddings = vectorizer.fit_transform(X)
 
 print("\nTf-idf Feature Names:")
-a = vectorizer.get_feature_names_out()
-print(a)
+print(vectorizer.get_feature_names_out())
 
-# Display the Tf-idf matrix
 print("\nTf-idf Matrix:")
-b = tfidf_matrix.toarray()
-print(b)
-
-
-print("CountVectorizer Feature Names:")
-print(count_vectorizer.get_feature_names_out())
-print("\nCountVectorizer Matrix:")
-print(count_matrix.toarray())
-
-
-# counts = y.value_counts()
-# pyplot.bar(x=["0", "1"], height=[counts[0], counts[1]])
-# pyplot.show()
-
-# print(X)
+print(sentence_embeddings.toarray())
