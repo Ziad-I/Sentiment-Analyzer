@@ -1,8 +1,14 @@
 import numpy as np
+import tensorflow as tf
 import pandas as pd
+from sklearn.metrics import accuracy_score
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+from sklearn.model_selection import GridSearchCV, train_test_split
+from tensorflow.keras import layers, Sequential
+from scikeras.wrappers import KerasClassifier
 from matplotlib import pyplot
 import spacy
+import matplotlib.pyplot as plt
 
 df = pd.read_csv("sentimentdataset (Project 1).csv")
 df = df.drop(["Source", "ID"], axis=1)
@@ -26,6 +32,8 @@ def process_text(text):
 
 df["Message"] = df["Message"].apply(process_text)
 
+X = df.iloc[:, 0]
+y = df.iloc[:, -1]
 
 vectorizer = TfidfVectorizer()
 tfidf_matrix = vectorizer.fit_transform(df['Message'])
@@ -49,8 +57,6 @@ print("\nCountVectorizer Matrix:")
 print(count_matrix.toarray())
 
 
-X = df[features]
-y = df[targets]
 # counts = y.value_counts()
 # pyplot.bar(x=["0", "1"], height=[counts[0], counts[1]])
 # pyplot.show()
