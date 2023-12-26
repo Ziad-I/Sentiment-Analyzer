@@ -1,7 +1,7 @@
 import numpy as np
 import tensorflow as tf
 import pandas as pd
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, classification_report
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.model_selection import GridSearchCV, train_test_split
 from tensorflow.keras import layers, Sequential
@@ -75,3 +75,6 @@ best_model.fit(X_train, y_train)
 prediction = best_model.predict(X_test)
 acc = accuracy_score(y_pred=prediction, y_true=y_test)
 print(f'Test Accuracy: {acc}')
+
+report = classification_report(y_test, prediction)
+print("Classification Report:\n", report)
