@@ -10,15 +10,14 @@ df = pd.read_csv("sentimentdataset_stopwords_lemmatized.csv")
 X = df['Message']
 y = df['Target']
 
-# Split the data into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
 # Create a TfidfVectorizer
 vectorizer = TfidfVectorizer()
 
 # Transform the training and testing data
-X_train_tfidf = vectorizer.fit_transform(X_train)
-X_test_tfidf = vectorizer.transform(X_test)
+X_tfidf = vectorizer.fit_transform(X)
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X_tfidf, y, test_size=0.2, random_state=42)
 
 # to convert it to a data frame
 # df_tfidf = pd.DataFrame(X_train_tfidf.toarray(), columns=vectorizer.get_feature_names_out())
@@ -36,13 +35,13 @@ param_grid = {
 
 # Perform grid search with 5-fold cross-validation
 grid_search = GridSearchCV(svc, param_grid, scoring='accuracy', error_score='raise', cv=5)
-grid_search.fit(X_train_tfidf, y_train)
+grid_search.fit(X_train, y_train)
 
 # Print the best parameters found by grid search
 print("Best Parameters: ", grid_search.best_params_)
 
 # Predict on the testing set with the best model
-y_pred = grid_search.predict(X_test_tfidf)
+y_pred = grid_search.predict(X_test)
 
 # Evaluate the model
 accuracy = accuracy_score(y_test, y_pred)
