@@ -23,20 +23,19 @@ X_test_tfidf = vectorizer.transform(X_test)
 # to convert it to a data frame
 # df_tfidf = pd.DataFrame(X_train_tfidf.toarray(), columns=vectorizer.get_feature_names_out())
 
-svc = LinearSVC(max_iter=1000000, dual=False)
+svc = LinearSVC(max_iter=100000, dual=False)
 
 # Define the parameter grid for grid search
 param_grid = {
-    'C': [0.01, 0.1, 1, 10, 100],
+    'C': [0.001, 0.01, 0.1, 1, 10, 100],
     'penalty': ['l1', 'l2'],
-    'loss': ['hinge', 'squared_hinge'],
-    'dual': [True, False],
-    'tol': [1e-4, 1e-3, 1e-2],
+    'loss': ['squared_hinge'],
+    'tol': [1e-3, 1e-2, 1e-1, 1],
     'class_weight': [None, 'balanced']
 }
 
 # Perform grid search with 5-fold cross-validation
-grid_search = GridSearchCV(svc, param_grid, cv=5, scoring='accuracy')
+grid_search = GridSearchCV(svc, param_grid, scoring='accuracy', error_score='raise', cv=5)
 grid_search.fit(X_train_tfidf, y_train)
 
 # Print the best parameters found by grid search
